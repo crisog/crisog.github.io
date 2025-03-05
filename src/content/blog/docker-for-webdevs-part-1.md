@@ -116,7 +116,7 @@ node-server                   latest    603a98bd2bd9   19 seconds ago   327MB
 
 For the sake of understanding what Docker does, I intentially did not use an image that came with Node pre-installed.
 
-However, it is an option to use an official image that comes with the preinstalled OS level dependencies you need for your app; which results in a smaller Dockerfile and image size.
+However, it is an option to use an official image that comes with the preinstalled OS level dependencies you need for your app; which results in a smaller Dockerfile.
 
 Some images are based on very minimal OS like Alpine Linux which could reduce the image size from 327MB to about 162MB (~50% less).
 
