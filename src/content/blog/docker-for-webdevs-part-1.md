@@ -1,5 +1,5 @@
 ---
-title: "Docker for Web Devs: Part 1"
+title: "Docker for Web Devs: Part 1 - Getting Started"
 description: "This is the Part 1 of my blog series Docker for Web Devs"
 pubDate: "Mar 5 2025"
 ---
@@ -12,15 +12,15 @@ This simplifies a lot for us. But, what do we have to do to package our app?
 
 ### Containers
 
-Docker introduces the concept of "container" to refer to the environment where your app runs. A container is no more than an isolated operating system, which runs in your computer.
+Docker introduces the concept of "container" to refer to the environment where your app runs. It is an isolated environment that runs on your computer, sharing the host’s operating system kernel but providing its own filesystem, processes, and network interfaces. 
 
-So you can have a linux instance running in your MacOS laptop with ease. Pretty much anything.
+This allows you to run a Linux instance on a MacOS laptop, for example, without needing a full virtual machine.
 
 ## Images
 
 To be able to spawn these isolated environments in our computer, we need to create a Docker "image".
 
-An image in Docker is what we call the result of packaging your app with its base OS and its corresponding dependencies.
+An image in Docker is what we call the result of packaging everything you need to run your app:  the code, runtime, libraries, and dependencies.
 
 To create a docker image, we must define what's gonna be included in it. We do it by creating a Dockerfile.
 
@@ -65,16 +65,19 @@ WORKDIR /app
 # The dot indicates ALL files from given path
 COPY . .
 
-# Install application dependencies - the specific npm packages
-# that your particular Node.js project needs to function
-RUN npm ci --omit=dev
+# Install application dependencies needed for building the application
+RUN npm ci
+
+# Build the application - compiles source code and prepares it for production
+# This image assumes the output dir is `dist/`
+RUN npm run build
 
 # This is the port the application will listen on (not mandatory)
 EXPOSE 3000
 
 # Define the command to execute when the container starts
 # this command runs on WORKDIR directory (/app)
-CMD ["node", "src/index.js"]
+CMD ["node", "dist/index.js"]
 ```
 
 ### .dockerignore
@@ -89,14 +92,14 @@ In our example, this is what it would look like:
 node_modules
 ```
 
-Since we are do `npm install ci` during the build process, we don't want to add any existing `node_modules` that might be in our directory when building the image.
+In our `.dockerignore`, we exclude `node_modules` because we install dependencies during the build process with npm ci. You might also exclude files like `.git`, logs, or temporary build files to keep the image clean and small.
 
 ### Building our Docker image
 
 To be able to create the image so we can distribute/deploy our app, we run the following command:
 
 ```bash
-docker build -t "image_name" .
+docker build -t "node-server" .
 ```
 
 This will effectively build your image, and it will be saved in your computer.
@@ -113,7 +116,9 @@ node-server                   latest    603a98bd2bd9   19 seconds ago   327MB
 
 For the sake of understanding what Docker does, I intentially did not use an image that came with Node pre-installed.
 
-However, it is an option to use an official image that comes with the preinstalled OS level dependencies you need for your app; which results in a smaller Dockerfile.
+However, it is an option to use an official image that comes with the preinstalled OS level dependencies you need for your app; which results in a smaller Dockerfile and image size.
+
+Some images are based on very minimal OS like Alpine Linux which could reduce the image size from 327MB to about 162MB (~50% less).
 
 I will leave some examples below:
 
