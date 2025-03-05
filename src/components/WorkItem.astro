@@ -1,0 +1,31 @@
+---
+interface Props {
+  company: string;
+  role: string;
+  period: string;
+  githubUrl?: string;
+  githubName?: string;
+}
+
+const { company, role, period, githubUrl, githubName } = Astro.props;
+---
+
+<h3 class="text-[18px] mt-[20px] text-[#007acc] font-bold">
+  {role} | {company}
+</h3>
+<p class="m-0 mb-[25px] text-[#666]">{period}</p>
+
+<slot />
+
+{
+  githubUrl && (
+    <p class="my-[30px]">
+      <a
+        href={githubUrl}
+        class="text-[#007acc] no-underline hover:underline font-bold"
+      >
+        <i class="fab fa-github mr-[5px]" /> {githubName || company}
+      </a>
+    </p>
+  )
+}

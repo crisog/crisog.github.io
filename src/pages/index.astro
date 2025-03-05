@@ -1,0 +1,25 @@
+---
+import MainLayout from "../layouts/MainLayout.astro";
+import SocialLinks from "../components/SocialLinks.astro";
+import ProjectsList from "../components/ProjectsList.astro";
+import WorkExperience from "../components/WorkExperience.astro";
+import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+---
+
+<MainLayout title={SITE_TITLE} description={SITE_DESCRIPTION}>
+  <h1 class="mb-[5px]">Cristopher Ortega (aka CrisOG)</h1>
+
+  <SocialLinks />
+
+  <p class="mb-[15px]">
+    I'm a software engineer specializing in blockchain technology since 2020. My
+    expertise lies in blockchain data access layers (RPC infrastructure), where
+    I've spent over 3 years focusing on scalability and data integrity. I'm
+    committed to building robust, efficient systems that drive the blockchain
+    industry forward.
+  </p>
+
+  <ProjectsList />
+
+  <WorkExperience />
+</MainLayout>

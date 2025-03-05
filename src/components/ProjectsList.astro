@@ -1,0 +1,45 @@
+---
+interface Project {
+  name: string;
+  url: string;
+  description: string;
+}
+
+const projects: Project[] = [
+  {
+    name: "Ghost Crab",
+    url: "https://github.com/stakelens/ghost-crab",
+    description: "High-performance EVM chain indexer",
+  },
+  {
+    name: "Morpho Liquidator",
+    url: "https://github.com/crisog/morpho-liquidator",
+    description: "Liquidation bot for Morpho",
+  },
+  {
+    name: "Morpho Indexer",
+    url: "https://github.com/crisog/morpho-markets",
+    description: "Real-time Morpho market data indexing",
+  },
+];
+---
+
+<h2 class="text-[20px] mt-[40px] text-[#007acc] font-bold">
+  Open Source Projects
+</h2>
+
+<ul class="my-[5px] pl-[20px]">
+  {
+    projects.map((project) => (
+      <li class="list-disc">
+        <a
+          href={project.url}
+          class="inline-block my-[5px] font-bold text-[#007acc] no-underline hover:underline"
+        >
+          <i class="fab fa-github" /> {project.name}
+        </a>
+        - {project.description}
+      </li>
+    ))
+  }
+</ul>

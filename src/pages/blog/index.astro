@@ -1,0 +1,51 @@
+---
+import BaseHead from "../../components/BaseHead.astro";
+import { SITE_TITLE, SITE_DESCRIPTION } from "../../consts";
+import { getCollection } from "astro:content";
+import FormattedDate from "../../components/FormattedDate.astro";
+import "../../styles/global.css";
+
+const posts = (await getCollection("blog")).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+  </head>
+  <body
+    class="bg-[#faf0e6] text-[#333] leading-[1.6] text-[18px] font-light antialiased"
+  >
+    <div class="max-w-[800px] mx-auto p-[30px] sm:p-[15px]">
+      <a href="/" class="back-link"
+        ><i class="fas fa-arrow-left"></i> Back to Home</a
+      >
+      <h1>Blog</h1>
+      <p>
+        Welcome to my blog! Here I write about blockchain technology, software
+        engineering, and other technical topics.
+      </p>
+
+      <ul class="blog-list">
+        {
+          posts.map((post) => (
+            <li>
+              <a href={`/blog/${post.id}/`}>
+                <h2 class="title">{post.data.title}</h2>
+                <p class="date">
+                  <FormattedDate date={post.data.pubDate} />
+                </p>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </body>
+</html>
