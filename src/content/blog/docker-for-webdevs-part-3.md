@@ -62,7 +62,7 @@ This means our multi-stage build is both **flexible** & more **efficient**, beca
 Beyond just saving space, smaller runtime images offer important security benefits. With fewer packages installed, your production container has a reduced attack surface and fewer potential vulnerabilities to patch. This is particularly important for applications that are exposed to the internet.
 
 #### Size
-Let’s talk numbers. A single-stage build using `node:22` might weigh in at 1GB, thanks to `node_modules` and extra dependencies. Switch to a multi-stage build with `node:22-alpine`, and that could shrink to ~160MB. 
+A single-stage build using `node:22` might weigh in at 1GB, thanks to `node_modules` and extra dependencies. Switch to a multi-stage build with `node:22-alpine`, and that could shrink to ~160MB. 
 
 Smaller images mean faster deployments & lower storage costs.
 
