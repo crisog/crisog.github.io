@@ -1,0 +1,44 @@
+---
+export interface Props {
+  figureNumber: number;
+  description: string;
+  className?: string;
+}
+
+const { figureNumber, description, className = "" } = Astro.props;
+
+declare global {
+  interface Window {
+    mermaidInitialized?: boolean;
+  }
+}
+---
+
+<script>
+  import mermaid from "mermaid";
+
+  if (!window.mermaidInitialized) {
+    mermaid.initialize({
+      startOnLoad: true,
+    });
+    window.mermaidInitialized = true;
+  }
+</script>
+
+<figure class="flex flex-col items-center justify-center my-4">
+  <div class="w-full flex items-center justify-center">
+    <pre class="mermaid">
+      <slot />
+    </pre>
+  </div>
+  <p class="text-sm">
+    <b>Figure {figureNumber}:</b>
+    {description}
+  </p>
+</figure>
+
+<style>
+  :global(.mermaid) {
+    background-color: transparent !important;
+  }
+</style>

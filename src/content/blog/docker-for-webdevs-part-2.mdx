@@ -3,6 +3,7 @@ title: "Docker for Web Devs: Part 2 - Optimizing Builds with Layer Caching"
 description: "This is the Part 2 of my blog series Docker for Web Devs"
 pubDate: "Mar 7 2025"
 ---
+import MermaidDiagram from '../../components/MermaidDiagram.astro';
 
 This post is the Part 2 of the Docker for Web Devs series. If you haven't read the previous parts, check them out first:
 
@@ -22,7 +23,22 @@ Think of Docker images like a LEGO structure, where each instruction in your Doc
 
 The crucial part is that Docker can only replace bricks from the top down. If you change a brick in the middle of your structure, Docker must rebuild everything above it, even if those higher bricks haven't changed themselves.
 
-<img src="/cache/top-down.svg" alt="Docker layers are built from top to bottom, like stacking LEGO bricks" style="width:200px; margin: 0 auto; display: block;"/>
+<MermaidDiagram
+  figureNumber={1}
+  description="Docker layers build from bottom to top">
+{`
+graph BT
+    A["RUN npm ci"]
+    B["COPY .."]
+    C["WORKDIR"]
+    D["FROM"]
+    D --> C --> B --> A
+    style A fill:#e2e8f0,stroke:#64748b
+    style B fill:#e2e8f0,stroke:#64748b
+    style C fill:#e2e8f0,stroke:#64748b
+    style D fill:#e2e8f0,stroke:#64748b
+`}
+</MermaidDiagram>
 
 ### Cache Invalidation
 Let's look at our previous Node.js Dockerfile from Part 1:
@@ -41,7 +57,22 @@ RUN npm ci
 
 #### What happens if we make a code change?
 
-<img src="/cache/invalidation.svg" alt="When a code change happens, Docker invalidates the COPY layer and all subsequent layers" style="width:350px; margin: 0 auto; display: block;"/>
+<MermaidDiagram
+  figureNumber={2}
+  description="Code changes invalidate the COPY layer and above">
+{`
+graph BT
+    A["RUN npm ci"]
+    B["COPY .."]
+    C["WORKDIR"]
+    D["FROM"]
+    D --> C --> B --> A
+    style A fill:#fee2e2,stroke:#ef4444
+    style B fill:#fee2e2,stroke:#ef4444
+    style C fill:#e2e8f0,stroke:#64748b
+    style D fill:#e2e8f0,stroke:#64748b
+`}
+</MermaidDiagram>
 
 After making a source code change, our `COPY` instruction cache gets invalidated. And that forces the `RUN` instructions to be invalidated as well which results in the packages being installed all over again.
 
@@ -70,7 +101,24 @@ COPY . .
 
 If you made the changes above, this is how Docker process its layer cache:
 
-<img src="/cache/optimization.svg" alt="Docker layer caching in action - dependencies are cached while code changes trigger selective rebuilds" style="width:400px; margin: 0 auto; display: block;"/>
+<MermaidDiagram
+  figureNumber={3}
+  description="Only dependency changes trigger rebuilds">
+{`
+graph BT
+    A["COPY .."]
+    B["RUN npm ci"]
+    C["COPY deps"]
+    D["WORKDIR"]
+    E["FROM"]
+    E --> D --> C --> B --> A
+    style A fill:#fee2e2,stroke:#ef4444
+    style B fill:#e2e8f0,stroke:#64748b
+    style C fill:#e2e8f0,stroke:#64748b
+    style D fill:#e2e8f0,stroke:#64748b
+    style E fill:#e2e8f0,stroke:#64748b
+`}
+</MermaidDiagram>
 
 This is much better as now, unless your dependencies change, Docker will use cache for those layers and the build will be much faster!
 
