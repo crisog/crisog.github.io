@@ -3,6 +3,7 @@ title: "Docker for Web Devs: Part 1 - Getting Started"
 description: "This is the Part 1 of my blog series Docker for Web Devs"
 pubDate: "Mar 6 2025"
 ---
+import MermaidDiagram from '../../components/MermaidDiagram.astro';
 
 ## Docker
 
@@ -14,6 +15,43 @@ This simplifies a lot for us. But, what do we have to do to package our app?
 
 Docker introduces the concept of "container" to refer to the environment where your app runs. 
 
+<MermaidDiagram
+  figureNumber={1}
+  description="Container isolation from host system"
+  size="lg">
+{`
+%%{init: {'theme':'base', 'themeVariables': { 'fontSize': '24px', 'fontFamily': 'arial', 'nodeSpacing': 100, 'rankSpacing': 100 }}}%%
+graph BT
+    subgraph containers[" "]
+        direction LR
+        subgraph c1[Container]
+            app1[Application]
+        end
+        subgraph c2[Container]
+            app2[Application]
+        end
+        subgraph c3[Container]
+            app3[Application]
+        end
+    end
+    subgraph os[Operating System Host]
+        k[Kernel]
+    end
+    c1 -.-> k
+    c2 -.-> k
+    c3 -.-> k
+    style containers fill:none,stroke:none
+    style c1 fill:#93c5fd,stroke:#3b82f6
+    style c2 fill:#93c5fd,stroke:#3b82f6
+    style c3 fill:#93c5fd,stroke:#3b82f6
+    style os fill:#bfdbfe,stroke:#3b82f6
+    style app1 fill:white,stroke:#3b82f6
+    style app2 fill:white,stroke:#3b82f6
+    style app3 fill:white,stroke:#3b82f6
+    style k fill:white,stroke:#3b82f6
+`}
+</MermaidDiagram>
+
 It is an isolated environment that runs on your computer, sharing the host's operating system kernel but providing its own filesystem, processes, and network interfaces. 
 
 This allows you to run a Linux instance on a MacOS laptop, for example, without needing a full virtual machine.
@@ -22,7 +60,27 @@ This allows you to run a Linux instance on a MacOS laptop, for example, without 
 
 To be able to spawn these isolated environments in our computer, we need to create a Docker "image".
 
-An image in Docker is what we call the result of packaging everything you need to run your app:  the code, runtime, libraries, and dependencies.
+An image in Docker is what we call the result of packaging everything you need to run your app: the code, runtime, libraries, and dependencies.
+
+<MermaidDiagram
+  figureNumber={2}
+  description="Docker image layers">
+{`
+graph TB
+    subgraph image[Docker Image]
+        app[Application Code]
+        deps[Dependencies]
+        runtime[Runtime]
+        os[Base OS]
+    end
+    os --> runtime --> deps --> app
+    style image fill:#f3f4f6,stroke:#d1d5db
+    style app fill:#dbeafe,stroke:#3b82f6
+    style deps fill:#dbeafe,stroke:#3b82f6
+    style runtime fill:#dbeafe,stroke:#3b82f6
+    style os fill:#dbeafe,stroke:#3b82f6
+`}
+</MermaidDiagram>
 
 To create a docker image, we must define what's gonna be included in it. We do it by creating a Dockerfile.
 

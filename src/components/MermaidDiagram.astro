@@ -3,9 +3,10 @@ export interface Props {
   figureNumber: number;
   description: string;
   className?: string;
+  size?: "sm" | "md" | "lg";
 }
 
-const { figureNumber, description, className = "" } = Astro.props;
+const { figureNumber, description, className = "", size = "md" } = Astro.props;
 
 declare global {
   interface Window {
@@ -26,8 +27,16 @@ declare global {
 </script>
 
 <figure class="flex flex-col items-center justify-center my-4">
-  <div class="w-full flex items-center justify-center">
-    <pre class="mermaid">
+  <div
+    class={`flex items-center justify-center ${
+      size === "lg"
+        ? "w-full md:w-[800px]"
+        : size === "md"
+          ? "w-full md:w-[600px]"
+          : "w-full md:w-[400px]"
+    }`}
+  >
+    <pre class="mermaid w-full">
       <slot />
     </pre>
   </div>
