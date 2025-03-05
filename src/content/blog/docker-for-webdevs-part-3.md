@@ -1,7 +1,7 @@
 ---
 title: "Docker for Web Devs: Part 3 - Multi-stage Builds"
 description: "This is the Part 3 of my blog series Docker for Web Devs"
-pubDate: "Mar 7 2025"
+pubDate: "Mar 8 2025"
 ---
 
 This post is the Part 3 of the Docker for Web Devs series. If you haven't read the previous parts, check them out first:

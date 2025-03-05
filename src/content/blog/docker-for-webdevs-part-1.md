@@ -1,7 +1,7 @@
 ---
 title: "Docker for Web Devs: Part 1 - Getting Started"
 description: "This is the Part 1 of my blog series Docker for Web Devs"
-pubDate: "Mar 5 2025"
+pubDate: "Mar 6 2025"
 ---
 
 ## Docker
