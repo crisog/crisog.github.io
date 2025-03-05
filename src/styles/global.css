@@ -4,11 +4,21 @@
   License MIT: https://github.com/HermanMartinus/bearblog/blob/master/LICENSE.md
  */
 
-@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;700&display=swap");
-
 /* Set default font */
-html {
-  font-family: "JetBrains Mono", monospace;
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("/fonts/JetBrainsMono-Regular.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("/fonts/JetBrainsMono-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
 }
 
 /* Global typography styles */
@@ -164,3 +174,7 @@ p {
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+html {
+  font-family: "JetBrains Mono", monospace;
+}
