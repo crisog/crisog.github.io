@@ -25,7 +25,9 @@ const { title = SITE_TITLE, description = SITE_DESCRIPTION } = Astro.props;
     class="bg-[#faf0e6] m-0 p-0 text-[#333] leading-[1.6] text-[18px] font-light antialiased"
   >
     <div class="max-w-[800px] mx-auto p-[30px] sm:p-[15px]">
-      <Navbar />
+      <div class="border-b border-[#007acc]/10 mb-[40px]">
+        <Navbar />
+      </div>
       <slot />
     </div>
   </body>
