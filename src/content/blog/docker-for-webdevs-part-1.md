@@ -133,11 +133,13 @@ WORKDIR /app
 
 COPY . .
 
-RUN npm ci --omit=dev
+RUN npm ci
+
+RUN npm run build
 
 EXPOSE 3000
 
-CMD ["node", "src/index.js"]
+CMD ["node", "dist/index.js"]
 ```
 </details>
 
@@ -150,14 +152,15 @@ CMD ["node", "src/index.js"]
 FROM oven/bun:1-alpine
 WORKDIR /usr/src/app
 
-COPY package.json bun.lock ./
-RUN bun install --frozen-lockfile --production
-
 COPY . .
 
-USER bun
-EXPOSE 3000/tcp
-ENTRYPOINT ["bun", "run", "index.ts"]
+RUN bun install
+
+RUN bun build
+
+EXPOSE 3000
+
+CMD ["bun", "run", "dist/index.js"]
 ```
 
 </details>
