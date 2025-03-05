@@ -12,6 +12,8 @@ This post is the Part 3 of the Docker for Web Devs series. If you haven't read t
 
 ## Docker Multi-stage Builds
 
+In our previous posts, we created Docker images that included everything needed to both build and run our application. This approach works, but it results in unnecessarily large images that contain build tools and development dependencies that aren't needed at runtime.
+
 When doing multi-stage builds, we separate the build stage from the runtime stage.
 
 ```docker
@@ -20,9 +22,11 @@ FROM node:22 AS builder
 
 WORKDIR /app
 
-COPY . .
+COPY package.json package-lock.json ./
 
 RUN npm ci
+
+COPY . .
 
 # This assumes you are using a bundler like esbuild, 
 # and no external dependencies are required other than our index.js
@@ -33,7 +37,8 @@ FROM node:22-alpine
 
 WORKDIR /app
 
-# If your app does need production dependencies
+# If your app needs production dependencies that aren't bundled with your build,
+# you'll need to install them in the runtime stage:
 # COPY --from=builder /app/package*.json ./
 # RUN npm ci --only=production
 
@@ -45,14 +50,18 @@ EXPOSE 3000
 CMD ["node", "dist/index.js"]
 ```
 
-#### What are the advantages?
+### Advantages
 
 The build stage uses a full `node:22` image because it provides all the tools and dependencies required to compile or prepare our application. 
 
-The runtime stage uses `node:22-alpine` because we don't need dev/build dependencies. So the resulting image is much lighter than the full node:22 image.
+The runtime stage uses `node:22-alpine` because we don't need dev/build dependencies. Alpine Linux is a lightweight Linux distribution designed for security, simplicity, and resource efficiency. So the resulting image is much lighter than the full node:22 image.
 
 This means our multi-stage build is both **flexible** & more **efficient**, because you can have different environments for building versus running the app & the resulting image is **lighter**.
 
+#### Security
+Beyond just saving space, smaller runtime images offer important security benefits. With fewer packages installed, your production container has a reduced attack surface and fewer potential vulnerabilities to patch. This is particularly important for applications that are exposed to the internet.
+
+#### Size
 Let’s talk numbers. A single-stage build using `node:22` might weigh in at 1GB, thanks to `node_modules` and extra dependencies. Switch to a multi-stage build with `node:22-alpine`, and that could shrink to ~160MB. 
 
 Smaller images mean faster deployments & lower storage costs.
