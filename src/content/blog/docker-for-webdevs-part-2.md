@@ -1,7 +1,7 @@
 ---
 title: "Docker for Web Devs: Part 2 - Optimizing Builds with Layer Caching"
 description: "This is the Part 2 of my blog series Docker for Web Devs"
-pubDate: "Mar 5 2025"
+pubDate: "Mar 6 2025"
 ---
 
 This post is the Part 2 of the Docker for Web Devs series. If you haven't read the previous parts, check them out first:
