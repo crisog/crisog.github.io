@@ -3,6 +3,7 @@ title: "Docker for Web Devs: Part 3 - Multi-stage Builds"
 description: "This is the Part 3 of my blog series Docker for Web Devs"
 pubDate: "Mar 8 2025"
 ---
+import MermaidDiagram from '../../components/MermaidDiagram.astro';
 
 This post is the Part 3 of the Docker for Web Devs series. If you haven't read the previous parts, check them out first:
 
@@ -67,3 +68,31 @@ A single-stage build using `node:22` might weigh in at 1GB, thanks to `node_modu
 Smaller images mean faster deployments & lower storage costs.
 
 
+<MermaidDiagram
+  figureNumber={1}
+  description="Multi-stage Build Process">
+{`
+graph TB
+    subgraph build["Build Stage (1GB)"]
+        direction BT
+        dist["Built App"]
+        src["Source Code"]
+        deps["Dependencies"]
+        node["node:22"]
+    end
+    subgraph runtime["Runtime Stage (160MB)"]
+        direction BT
+        app["Built App"]
+        alpine["node:22-alpine"]
+    end
+    build --> runtime
+    style build fill:#fef3c7,stroke:#d97706
+    style runtime fill:#dbeafe,stroke:#3b82f6
+    style node fill:white,stroke:#d97706
+    style deps fill:white,stroke:#d97706
+    style src fill:white,stroke:#d97706
+    style dist fill:white,stroke:#d97706
+    style alpine fill:white,stroke:#3b82f6
+    style app fill:white,stroke:#3b82f6
+`}
+</MermaidDiagram>
