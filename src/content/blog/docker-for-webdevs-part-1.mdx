@@ -15,12 +15,15 @@ This simplifies a lot for us. But, what do we have to do to package our app?
 
 Docker introduces the concept of "container" to refer to the environment where your app runs. 
 
+It is an isolated environment that runs on your computer, sharing the host's operating system kernel but providing its own filesystem, processes, and network interfaces. 
+
+This allows you to run a Linux instance on a MacOS laptop, for example, without needing a full virtual machine.
+
 <MermaidDiagram
   figureNumber={1}
   description="Container isolation from host system"
   size="lg">
 {`
-%%{init: {'theme':'base', 'themeVariables': { 'fontSize': '24px', 'fontFamily': 'arial', 'nodeSpacing': 100, 'rankSpacing': 100 }}}%%
 graph BT
     subgraph containers[" "]
         direction LR
@@ -34,7 +37,7 @@ graph BT
             app3[Application]
         end
     end
-    subgraph os[Operating System Host]
+    subgraph os[Host OS]
         k[Kernel]
     end
     c1 -.-> k
@@ -51,10 +54,6 @@ graph BT
     style k fill:white,stroke:#3b82f6
 `}
 </MermaidDiagram>
-
-It is an isolated environment that runs on your computer, sharing the host's operating system kernel but providing its own filesystem, processes, and network interfaces. 
-
-This allows you to run a Linux instance on a MacOS laptop, for example, without needing a full virtual machine.
 
 ## Images
 
