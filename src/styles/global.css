@@ -152,6 +152,17 @@ p {
 .blog-content code {
   font-family: "JetBrains Mono", monospace;
   font-size: 14px;
+  background-color: #f3f3f3;
+  color: #e06c75;
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+
+.blog-content pre code {
+  background-color: transparent;
+  color: inherit;
+  padding: 0;
+  border-radius: 0;
 }
 
 .blog-content img {
