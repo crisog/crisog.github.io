@@ -69,7 +69,7 @@ COPY . .
 RUN npm ci
 
 # Build the application - compiles source code and prepares it for production
-# This image assumes the output dir is `dist/`
+# This image assumes the output dir is `dist/` and no external deps.
 RUN npm run build
 
 # This is the port the application will listen on (not mandatory)

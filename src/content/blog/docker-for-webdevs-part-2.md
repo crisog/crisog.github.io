@@ -24,12 +24,18 @@ COPY . .
 
 RUN npm ci
 
+# This assumes you are using a bundler like esbuild, 
+# and no external dependencies are required other than our index.js
 RUN npm run build
 
 # --- Runtime Stage ---
 FROM node:22-alpine
 
 WORKDIR /app
+
+# If your app does need production dependencies
+# COPY --from=builder /app/package*.json ./
+# RUN npm ci --only=production
 
 # Copy only the built files from the build stage
 COPY --from=builder /app/dist ./dist
@@ -43,9 +49,9 @@ CMD ["node", "dist/index.js"]
 
 The build stage uses a full `node:22` image because it provides all the tools and dependencies required to compile or prepare our application. 
 
-The runtime stage uses `node:122-alpine` because we don't need dev/build dependencies. So the resulting image is much lighter than the full node:22 image.
+The runtime stage uses `node:22-alpine` because we don't need dev/build dependencies. So the resulting image is much lighter than the full node:22 image.
 
-This means our multi-stage build is both **flexible** & more **efficient**, as the resulting image is **lighter**.
+This means our multi-stage build is both **flexible** & more **efficient**, because you can have different environments for building versus running the app & the resulting image is **lighter**.
 
 Let’s talk numbers. A single-stage build using `node:22` might weigh in at 1GB, thanks to `node_modules` and extra dependencies. Switch to a multi-stage build with `node:22-alpine`, and that could shrink to ~160MB. 
 
