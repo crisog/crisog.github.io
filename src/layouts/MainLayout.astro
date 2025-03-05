@@ -1,5 +1,6 @@
 ---
 import BaseHead from "../components/BaseHead.astro";
+import Navbar from "../components/Navbar.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 import "../styles/global.css";
 
@@ -24,6 +25,7 @@ const { title = SITE_TITLE, description = SITE_DESCRIPTION } = Astro.props;
     class="bg-[#faf0e6] m-0 p-0 text-[#333] leading-[1.6] text-[18px] font-light antialiased"
   >
     <div class="max-w-[800px] mx-auto p-[30px] sm:p-[15px]">
+      <Navbar />
       <slot />
     </div>
   </body>
