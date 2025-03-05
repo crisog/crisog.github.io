@@ -12,7 +12,7 @@ This simplifies a lot for us. But, what do we have to do to package our app?
 
 ### Containers
 
-Docker introduces the concept of "container" to refer to the environment where your app runs. It is an isolated environment that runs on your computer, sharing the host’s operating system kernel but providing its own filesystem, processes, and network interfaces. 
+Docker introduces the concept of "container" to refer to the environment where your app runs. It is an isolated environment that runs on your computer, sharing the host's operating system kernel but providing its own filesystem, processes, and network interfaces. 
 
 This allows you to run a Linux instance on a MacOS laptop, for example, without needing a full virtual machine.
 
@@ -164,3 +164,9 @@ CMD ["bun", "run", "dist/index.js"]
 ```
 
 </details>
+
+---
+
+Want to learn how to make your Docker builds faster? Check out Part 2 where we dive into layer caching and build optimization.
+
+➡️ [Docker for Web Devs: Part 2 - Optimizing Builds with Layer Caching](/blog/docker-for-webdevs-part-2/)

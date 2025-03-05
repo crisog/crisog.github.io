@@ -99,3 +99,11 @@ This is much better as now, unless your dependencies change, Docker will use cac
     </tbody>
   </table>
 </div>
+
+<br/>
+
+---
+
+Want to make your Docker images even smaller and more secure? Learn about multi-stage builds in Part 3.
+
+➡️ [Docker for Web Devs: Part 3 - Multi-stage Builds](/blog/docker-for-webdevs-part-3/)
