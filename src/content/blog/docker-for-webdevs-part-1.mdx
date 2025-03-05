@@ -61,27 +61,30 @@ To be able to spawn these isolated environments in our computer, we need to crea
 
 An image in Docker is what we call the result of packaging everything you need to run your app: the code, runtime, libraries, and dependencies.
 
+To create a docker image, we must define what's gonna be included in it. We do it by creating a Dockerfile.
+
 <MermaidDiagram
   figureNumber={2}
-  description="Docker image layers">
+  description="From Dockerfile to Docker Image">
 {`
 graph TB
     subgraph image[Docker Image]
-        app[Application Code]
+        direction TB
+        code[Application Code]
+        runtime[Runtime Environment]
+        libs[Libraries]
         deps[Dependencies]
-        runtime[Runtime]
-        os[Base OS]
     end
-    os --> runtime --> deps --> app
-    style image fill:#f3f4f6,stroke:#d1d5db
-    style app fill:#dbeafe,stroke:#3b82f6
-    style deps fill:#dbeafe,stroke:#3b82f6
-    style runtime fill:#dbeafe,stroke:#3b82f6
-    style os fill:#dbeafe,stroke:#3b82f6
+    dockerfile[Dockerfile] --> image
+    style image fill:#dbeafe,stroke:#3b82f6
+    style dockerfile fill:#fef3c7,stroke:#d97706
+    style code fill:white,stroke:#3b82f6
+    style runtime fill:white,stroke:#3b82f6
+    style libs fill:white,stroke:#3b82f6
+    style deps fill:white,stroke:#3b82f6
 `}
 </MermaidDiagram>
 
-To create a docker image, we must define what's gonna be included in it. We do it by creating a Dockerfile.
 
 But we first need to install Docker. Since this depends on what OS you use for development, I'll leave a link to the Docker docs.
 
