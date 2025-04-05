@@ -1,0 +1,153 @@
+---
+title: "Using client certificates with Cloudflare Workers (mTLS)"
+description: "This is a guide to using client certificates with Cloudflare Workers (mTLS)"
+pubDate: "Apr 5 2025"
+---
+import MermaidDiagram from '../../components/MermaidDiagram.astro';
+
+## What is mTLS?
+Mutual TLS (mTLS) is a security protocol where both the client and server authenticate each other using certificates — unlike standard TLS, where only the server is verified. A secure connection is only established if both validations succeed, ensuring that each party is who they claim to be.
+
+## The challenge of mTLS in the Workers runtime
+
+In a typical Node.js app, you'd use `undici` to provide client certificates for mTLS. 
+```ts
+import { request, Agent } from 'undici';
+
+const agent = new Agent({
+      connect: {
+        key: process.env.KEY,
+        cert: process.env.CERTIFICATE
+      }
+});
+
+const response = await request(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      dispatcher: agent,
+      body: JSON.stringify(requestBody)
+});
+```
+
+Cloudflare Workers run on a V8 isolate runtime rather than a full Node.js server.
+This means Node-specific modules and low-level networking APIs are absent. In particular, Node's built-in HTTP/HTTPS libraries are [not supported](https://developers.cloudflare.com/workers/runtime-apis/nodejs/#supported-nodejs-apis) in the Workers runtime.
+
+So, how can you establish a secure connection to an external service from a worker?
+
+The answer is Cloudflare's Mutual TLS certificates.
+
+## How to use mTLS with Cloudflare Workers
+
+Cloudflare allows you to upload client certificates using the mTLS certificate API, and then bind them to your Worker. These certificates are used automatically when making fetch requests via the bound Fetcher.
+
+For this particular example, we'll be using [Hono](https://hono.dev/) to create a simple API that uses mTLS to connect to an external service.
+
+First, set up your project:
+
+```bash
+npm create hono@latest cf-workers-mtls-example
+```
+
+Select the `cloudflare-workers` template.
+
+Next, upload your certificate to Cloudflare:
+
+Use Wrangler (installed with the Hono template) to upload your certificate and key in PEM format. Ensure you're in the directory containing your cert.pem and key.pem files:
+
+```bash
+npx wrangler mtls-certificate upload --cert cert.pem --key key.pem --name app-cert
+```
+
+Wrangler will open a browser to authenticate with your Cloudflare account. Once complete, your certificate will be uploaded and ready to use.
+
+```bash
+Uploading mTLS Certificate app-cert...
+Success! Uploaded mTLS Certificate app-cert
+ID: b145510d-25ff-4370-89b0-46b42532af1b
+Issuer: O=Internet Widgits Pty Ltd,ST=Some-State,C=AU
+Expires on 4/5/2026
+```
+
+Now, we can use it in our worker.
+
+1. Configure wrangler
+
+Update your wrangler.jsonc file to bind the certificate to your Worker. Replace the `certificate_id` with the ID from the upload step:
+
+```jsonc
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "cf-workers-mtls-example",
+  "main": "src/index.ts",
+  "mtls_certificates": [
+    {"binding": "APP_CERT", "certificate_id": "b145510d-25ff-4370-89b0-46b42532af1b"}
+  ]
+}
+```
+
+2. Properly configure the bindings for Hono.
+
+Define the APP_CERT binding as a Fetcher in your Hono app. A Fetcher is a special type in Cloudflare Workers that allows you to make authenticated HTTP requests using the uploaded mTLS certificate:
+```ts
+import { Hono } from "hono";
+import { cors } from "hono/cors";
+
+type Bindings = {
+  APP_CERT: Fetcher;
+};
+
+export const app = new Hono<{ Bindings: Bindings }>().use(
+  "*",
+  cors({
+    origin: ["*"],
+    allowHeaders: ["Content-Type", "Authorization"],
+    allowMethods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+  })
+);
+```
+
+3. Use the certificate in your worker.
+
+Use `c.env.APP_CERT.fetch` to make an mTLS-authenticated request to an external service:
+
+```ts
+app.get("/mtls-request", async (c) => {
+  const response = await c.env.APP_CERT.fetch(
+    "https://secure.api.com",
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+      body: JSON.stringify({
+        "user": "crisog",
+      }),
+    }
+  );
+
+  const responseJson = await response.json();
+
+  return c.json({ response: responseJson, status: response.status });
+});
+```
+
+4. Deploy your worker.
+
+```bash
+wrangler deploy
+```
+
+Once deployed, Wrangler will provide a URL to your worker.
+
+5. Test your worker.
+
+Verify it works using curl.
+```bash
+curl https://cf-workers-mtls-example.crisog.workers.dev/mtls-request
+```
+
+That's all you need to securely connect to external services using mTLS in Cloudflare Workers.
+
+You can find the example code for this blog post [here](https://github.com/crisog/cf-workers-mtls-example).
