@@ -133,17 +133,23 @@ app.get("/mtls-request", async (c) => {
 });
 ```
 
-4. Deploy your worker.
+4. Test your worker.
 
 ```bash
-wrangler deploy
+npx wrangler dev --remote
+```
+Note: the `--remote` flag is important to ensure it can make mTLS requests.
+
+```bash
+curl http://localhost:8787/mtls-request
 ```
 
-Once deployed, Wrangler will provide a URL to your worker.
+5. Deploy your worker.
 
-5. Test your worker.
-
-Verify it works using curl.
+```bash
+npx wrangler deploy
+```
+After deploying, it will provide a URL to your worker. Verify it works using curl.
 ```bash
 curl https://cf-workers-mtls-example.crisog.workers.dev/mtls-request
 ```
