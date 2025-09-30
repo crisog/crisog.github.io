@@ -12,20 +12,48 @@ const posts = (await getCollection("blog")).sort(
   title="Blog | Cristopher Ortega"
   description="Blog posts by Cristopher Ortega"
 >
-  <h1>Blog</h1>
+  <div class="relative min-h-screen bg-black text-white">
+    <div class="relative z-10 min-h-screen flex flex-col">
+      <main class="flex-1 px-6 py-12">
+        <div class="max-w-4xl mx-auto space-y-8">
+          <div class="space-y-2">
+            <h1 class="text-4xl md:text-5xl tracking-tight font-light">Blog</h1>
+            <div class="flex items-center gap-2 text-sm opacity-60 tracking-wider">
+              <span>{">"}</span>
+              <span>thoughts & writings</span>
+            </div>
+          </div>
 
-  <ul class="blog-list">
-    {
-      posts.map((post) => (
-        <li>
-          <a href={`/blog/${post.id}/`}>
-            <h2 class="title">{post.data.title}</h2>
-            <p class="date">
-              <FormattedDate date={post.data.pubDate} />
-            </p>
-          </a>
-        </li>
-      ))
-    }
-  </ul>
+          <div class="space-y-4">
+            {
+              posts.map((post) => (
+                <a
+                  href={`/blog/${post.id}/`}
+                  class="block border border-white/40 p-6 hover:border-white transition-all duration-300"
+                >
+                  <h2 class="text-xl tracking-tight font-light mb-2">
+                    {post.data.title}
+                  </h2>
+                  <p class="text-sm opacity-60 tracking-wider">
+                    <FormattedDate date={post.data.pubDate} />
+                  </p>
+                  {post.data.description && (
+                    <p class="text-sm opacity-80 mt-3 leading-relaxed">
+                      {post.data.description}
+                    </p>
+                  )}
+                </a>
+              ))
+            }
+          </div>
+        </div>
+      </main>
+
+      <footer class="border-t border-white/20 backdrop-blur-sm">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between text-xs opacity-60">
+          <div class="tracking-widest">© {new Date().getFullYear()}</div>
+        </div>
+      </footer>
+    </div>
+  </div>
 </MainLayout>

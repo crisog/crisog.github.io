@@ -125,24 +125,24 @@ This is much better as now, unless your dependencies change, Docker will use cac
 #### Visualizing the Difference
 
 <div class="overflow-x-auto">
-  <table class="w-full border-collapse border">
+  <table class="w-full border-collapse border border-white/20">
     <thead>
-      <tr class="bg-gray-100">
-        <th class="text-center p-4 border">Action</th>
-        <th class="text-center p-4 border">Original Dockerfile</th>
-        <th class="text-center p-4 border">Optimized Dockerfile</th>
+      <tr class="bg-white/5">
+        <th class="text-center p-4 border border-white/20">Action</th>
+        <th class="text-center p-4 border border-white/20">Original Dockerfile</th>
+        <th class="text-center p-4 border border-white/20">Optimized Dockerfile</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td class="text-center p-4 border">First time build<br/><span class="text-gray-600">(Fresh install)</span></td>
-        <td class="text-center p-4 border bg-yellow-50">45s<br/><span class="text-gray-600">Full build</span></td>
-        <td class="text-center p-4 border bg-yellow-50">45s<br/><span class="text-gray-600">Full build</span></td>
+        <td class="text-center p-4 border border-white/20">First time build<br/><span class="opacity-60">(Fresh install)</span></td>
+        <td class="text-center p-4 border border-white/20 bg-white/5">45s<br/><span class="opacity-60">Full build</span></td>
+        <td class="text-center p-4 border border-white/20 bg-white/5">45s<br/><span class="opacity-60">Full build</span></td>
       </tr>
       <tr>
-        <td class="text-center p-4 border">Modify source code<br/><span class="text-gray-600">(Change app.js)</span></td>
-        <td class="text-center p-4 border bg-red-50">45s<br/><span class="text-gray-600">Reinstalls everything</span></td>
-        <td class="text-center p-4 border bg-green-50">5s ✨<br/><span class="text-gray-600">Uses cached dependencies</span></td>
+        <td class="text-center p-4 border border-white/20">Modify source code<br/><span class="opacity-60">(Change app.js)</span></td>
+        <td class="text-center p-4 border border-white/20 bg-white/5">45s<br/><span class="opacity-60">Reinstalls everything</span></td>
+        <td class="text-center p-4 border border-white/20 bg-white/10">5s ✨<br/><span class="opacity-60">Uses cached dependencies</span></td>
       </tr>
     </tbody>
   </table>

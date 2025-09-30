@@ -9,23 +9,150 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 ---
 
 <MainLayout title={title} description={description}>
-  <div class="blog-post">
-    <div class="blog-header">
-      <h1 class="blog-title">{title}</h1>
-      <div class="blog-date">
-        <FormattedDate date={pubDate} />
-        {
-          updatedDate && (
-            <div class="last-updated">
-              Last updated on <FormattedDate date={updatedDate} />
+  <div class="relative min-h-screen bg-black text-white">
+    <div class="relative z-10 min-h-screen flex flex-col">
+      <main class="flex-1 px-6 py-12">
+        <div class="max-w-3xl mx-auto space-y-8">
+          <div class="space-y-4 border-b border-white/20 pb-8">
+            <a
+              href="/blog"
+              class="inline-flex items-center gap-2 text-sm opacity-60 hover:opacity-100 transition-opacity tracking-wider"
+            >
+              <span>{"<"}</span>
+              <span>BACK TO BLOG</span>
+            </a>
+            <h1 class="text-3xl md:text-5xl tracking-tight font-light leading-tight">
+              {title}
+            </h1>
+            <div class="flex items-center gap-4 text-sm opacity-60 tracking-wider">
+              <FormattedDate date={pubDate} />
+              {
+                updatedDate && (
+                  <>
+                    <span>•</span>
+                    <span>Updated <FormattedDate date={updatedDate} /></span>
+                  </>
+                )
+              }
             </div>
-          )
-        }
-      </div>
-    </div>
+          </div>
 
-    <div class="blog-content">
-      <slot />
+          <article class="prose prose-invert prose-sm md:prose-base max-w-none">
+            <slot />
+          </article>
+        </div>
+      </main>
+
+      <footer class="border-t border-white/20 backdrop-blur-sm">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between text-xs opacity-60">
+          <div class="tracking-widest">© {new Date().getFullYear()}</div>
+        </div>
+      </footer>
     </div>
   </div>
 </MainLayout>
+
+<style is:global>
+  article.prose {
+    @apply text-white/90 leading-relaxed;
+    line-height: 1.8;
+    font-size: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    article.prose {
+      font-size: 1.0625rem;
+      line-height: 1.85;
+    }
+  }
+
+  article.prose h1,
+  article.prose h2,
+  article.prose h3,
+  article.prose h4,
+  article.prose h5,
+  article.prose h6 {
+    @apply text-white font-light tracking-tight border-b border-white/20 pb-3 mb-6;
+  }
+
+  article.prose h1 {
+    @apply text-3xl md:text-4xl mt-12;
+  }
+
+  article.prose h2 {
+    @apply text-2xl md:text-3xl mt-12 mb-6;
+  }
+
+  article.prose h3 {
+    @apply text-xl md:text-2xl mt-10 mb-5;
+  }
+
+  article.prose h4 {
+    @apply mt-8;
+  }
+
+  article.prose p {
+    @apply mb-6 opacity-85;
+    max-width: 70ch;
+  }
+
+  article.prose a {
+    @apply text-white underline decoration-white/40 hover:decoration-white transition-colors;
+  }
+
+  /* Inline code (not in pre blocks) */
+  article.prose :not(pre) > code {
+    @apply bg-white/10 px-1.5 py-0.5 border border-white/20 text-sm;
+  }
+
+  /* Code blocks - minimal styling to let Shiki handle colors */
+  article.prose pre {
+    @apply border border-white/20 p-5 overflow-x-auto my-8;
+    line-height: 1.6;
+  }
+
+  article.prose pre code {
+    @apply text-sm;
+    font-size: 0.9rem;
+  }
+
+  article.prose ul,
+  article.prose ol {
+    @apply my-6 space-y-3 opacity-85;
+    max-width: 70ch;
+  }
+
+  article.prose li {
+    @apply ml-6;
+    line-height: 1.8;
+  }
+
+  article.prose li p {
+    @apply my-2;
+  }
+
+  article.prose blockquote {
+    @apply border-l-2 border-white/40 pl-6 py-2 italic opacity-75 my-8;
+  }
+
+  article.prose img {
+    @apply border border-white/40 my-6;
+  }
+
+  article.prose table {
+    @apply w-full border-collapse my-6;
+  }
+
+  article.prose th,
+  article.prose td {
+    @apply border border-white/20 px-4 py-2 text-left;
+  }
+
+  article.prose th {
+    @apply bg-white/5 font-light tracking-wider;
+  }
+
+  article.prose hr {
+    @apply border-white/20 my-8;
+  }
+</style>

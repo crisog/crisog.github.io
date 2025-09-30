@@ -12,8 +12,6 @@
     "@astrojs/mdx": "^4.1.0",
     "@astrojs/rss": "^4.0.11",
     "@astrojs/sitemap": "^3.2.1",
-    "@astrojs/tailwind": "^6.0.0",
-    "@tailwindcss/vite": "^4.0.9",
     "astro": "^5.4.1",
     "mermaid": "^11.4.1"
   },
