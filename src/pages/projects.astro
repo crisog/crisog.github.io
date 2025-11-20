@@ -1,0 +1,33 @@
+---
+import MainLayout from "../layouts/MainLayout.astro";
+import ProjectsList from "../components/ProjectsList.astro";
+---
+
+<MainLayout
+  title="Projects | Cristopher Ortega"
+  description="Projects and contributions by Cristopher Ortega"
+>
+  <div class="relative min-h-screen bg-black text-white">
+    <div class="relative z-10 min-h-screen flex flex-col">
+      <main class="flex-1 px-6 py-12">
+        <div class="max-w-4xl mx-auto space-y-8">
+          <div class="space-y-2">
+            <h1 class="text-4xl md:text-5xl tracking-tight font-light">Projects</h1>
+            <div class="flex items-center gap-2 text-sm opacity-60 tracking-wider">
+              <span>{">"}</span>
+              <span>open source & contributions</span>
+            </div>
+          </div>
+
+          <ProjectsList />
+        </div>
+      </main>
+
+      <footer class="border-t border-white/20 backdrop-blur-sm">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between text-xs opacity-60">
+          <div class="tracking-widest">© {new Date().getFullYear()}</div>
+        </div>
+      </footer>
+    </div>
+  </div>
+</MainLayout>

@@ -8,15 +8,27 @@ interface Project {
   secondaryLabel?: string;
 }
 
+interface Props {
+  limit?: number;
+}
+
+const { limit } = Astro.props;
+
 const projects: Project[] = [
   {
     number: "01",
     name: "Open Seer",
     url: "https://github.com/crisog/openseer",
-    description: "Open source distributed uptime monitoring tool written in Go",
+    description: "Self-hosted, horizontally scalable HTTP monitoring with a modern web interface",
   },
   {
     number: "02",
+    name: "pgcollector-ingest",
+    url: "https://github.com/crisog/pgcollector-ingest",
+    description: "Ingest pganalyze PostgreSQL snapshots and expose them as Prometheus metrics",
+  },
+  {
+    number: "03",
     name: "PostgreSQL + PITR",
     url: "https://railway.com/deploy/postgresql-barman--1?referralCode=9m68fX&utm_medium=integration&utm_source=template&utm_campaign=generic",
     secondaryUrl: "https://github.com/crisog/barman-pg-docker",
@@ -24,17 +36,33 @@ const projects: Project[] = [
     description: "Railway template that deploys PostgreSQL with Point-In-Time Recovery using Barman",
   },
   {
-    number: "03",
-    name: "Antiwork OSS",
-    url: "https://github.com/antiwork/gumboard/pulls?q=is%3Apr+is%3Aclosed+author%3Acrisog",
-    description: "Contributions to Antiwork open source projects",
+    number: "04",
+    name: "Railway SDK",
+    url: "https://github.com/crisog/railway-sdk",
+    description: "Lightweight TypeScript SDK for Railway.com",
+  },
+  {
+    number: "05",
+    name: "Railway MCP Server",
+    url: "https://github.com/crisog/railway-mcp-server",
+    description: "Unofficial Model Context Protocol server exposing Railway resources and automation tools to MCP clients",
+  },
+  {
+    number: "06",
+    name: "FFmpeg REST API",
+    url: "https://railway.com/deploy/ffmpeg-rest-api?referralCode=crisog",
+    secondaryUrl: "https://github.com/crisog/ffmpeg-rest",
+    secondaryLabel: "GitHub",
+    description: "REST API wrapping FFmpeg for media processing with Node.js, Hono, and BullMQ for async job processing",
   },
 ];
+
+const displayedProjects = limit ? projects.slice(0, limit) : projects;
 ---
 
 <div class="grid md:grid-cols-3 gap-6 pt-8">
   {
-    projects.map((project) => (
+    displayedProjects.map((project) => (
       <div class="border border-white/20 p-6 space-y-3 hover:border-white/60 transition-colors backdrop-blur-sm">
         <div class="text-xs opacity-60 tracking-widest">{project.number}</div>
         <h3 class="text-lg tracking-wide">{project.name}</h3>
