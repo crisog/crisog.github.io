@@ -76,7 +76,19 @@ const posts = (await getCollection("blog"))
             </div>
           </div>
 
-          <ProjectsList limit={3} />
+          <div class="space-y-4">
+            <div class="flex items-center justify-end">
+              <a
+                href="/projects"
+                class="text-sm tracking-wider opacity-60 hover:opacity-100 transition-opacity flex items-center gap-2"
+              >
+                <span>see all</span>
+                <i class="fas fa-arrow-right text-xs"></i>
+              </a>
+            </div>
+
+            <ProjectsList limit={3} />
+          </div>
         </div>
       </main>
 
