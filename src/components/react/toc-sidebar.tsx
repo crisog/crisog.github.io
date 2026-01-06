@@ -1,4 +1,3 @@
-import { useTocPosition } from "@/hooks/use-toc-position";
 import { TableOfContents } from "@/components/react/table-of-contents";
 
 interface Heading {
@@ -9,28 +8,15 @@ interface Heading {
 
 interface TocSidebarProps {
   headings: Heading[];
-  contentId: string;
 }
 
-export function TocSidebar({ headings, contentId }: TocSidebarProps) {
-  const { left, width, isReady } = useTocPosition(contentId);
-
+export function TocSidebar({ headings }: TocSidebarProps) {
   if (headings.length === 0) return null;
 
-  // CSS handles visibility: hidden on screens < 1200px (see parent)
-  // Fade in after position is calculated to prevent layout shift
+  // CSS handles both visibility and positioning - no JS needed
+  // Position is set via className, responsive to screen width
   return (
-    <div
-      className="fixed z-10 transition-opacity duration-200"
-      style={{
-        top: 120,
-        left,
-        width,
-        maxHeight: "calc(100vh - 180px)",
-        overflowY: "auto",
-        opacity: isReady ? 1 : 0,
-      }}
-    >
+    <div className="toc-sidebar fixed z-10 w-[250px] top-[120px] max-h-[calc(100vh-180px)] overflow-y-auto left-4 [@media(min-width:1500px)]:left-[calc(50vw-728px)]">
       <TableOfContents headings={headings} />
     </div>
   );

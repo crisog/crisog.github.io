@@ -58,7 +58,7 @@ const { title, description, pubDate, updatedDate, heroImage, headings = [] } = A
         {/* Desktop TOC Sidebar - hidden on mobile (<1200px) */}
         {headings.length > 0 && (
           <div class="hidden [@media(min-width:1200px)]:block">
-            <TocSidebar headings={headings} contentId="blog-content" client:load />
+            <TocSidebar headings={headings} client:load />
           </div>
         )}
       </main>
