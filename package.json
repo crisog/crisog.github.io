@@ -10,10 +10,15 @@
   },
   "dependencies": {
     "@astrojs/mdx": "^4.1.0",
+    "@astrojs/react": "^4.4.2",
     "@astrojs/rss": "^4.0.11",
     "@astrojs/sitemap": "^3.2.1",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
     "astro": "^5.4.1",
-    "mermaid": "^11.4.1"
+    "mermaid": "^11.4.1",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.20",
