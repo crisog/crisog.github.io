@@ -6,6 +6,11 @@ export default {
       sans: ['"JetBrains Mono"', "monospace"],
       mono: ['"JetBrains Mono"', "monospace"],
     },
+    extend: {
+      colors: {
+        "bg-primary": "var(--bg-primary)",
+      },
+    },
   },
   plugins: [],
 };

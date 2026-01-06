@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --bg-primary: #000000;
+}
+
 @font-face {
   font-family: "JetBrains Mono";
   src: url("/fonts/JetBrainsMono-Regular.woff2") format("woff2");
@@ -24,7 +28,7 @@
 }
 
 body {
-  background-color: #000000;
+  background-color: var(--bg-primary);
   color: #ffffff;
   overflow-x: hidden;
 }
