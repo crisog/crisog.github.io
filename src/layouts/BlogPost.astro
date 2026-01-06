@@ -15,22 +15,22 @@ const { title, description, pubDate, updatedDate, heroImage, headings = [] } = A
 ---
 
 <MainLayout title={title} description={description}>
-  <div class="relative min-h-screen bg-bg-primary text-white">
+  <div class="relative min-h-screen bg-bg-primary text-text-primary">
     <div class="relative z-10 min-h-screen flex flex-col">
       <main class="flex-1 px-6 py-12">
         <div id="blog-content" class="max-w-4xl mx-auto space-y-8">
-          <div class="space-y-4 border-b border-white/20 pb-8">
+          <div class="space-y-4 border-b border-border-primary pb-8">
             <a
               href="/blog"
-              class="inline-flex items-center gap-2 text-sm opacity-60 hover:opacity-100 transition-opacity tracking-wider"
+              class="inline-flex items-center gap-2 text-sm text-text-secondary hover:text-text-primary transition-colors tracking-wider"
             >
               <span>{"<"}</span>
               <span>BACK TO BLOG</span>
             </a>
-            <h1 class="text-3xl md:text-5xl tracking-tight font-light leading-tight">
+            <h1 class="text-3xl md:text-5xl tracking-tight font-light leading-tight text-text-primary">
               {title}
             </h1>
-            <div class="flex items-center gap-4 text-sm opacity-60 tracking-wider">
+            <div class="flex items-center gap-4 text-sm text-text-secondary tracking-wider">
               <FormattedDate date={pubDate} />
               {
                 updatedDate && (
@@ -63,8 +63,8 @@ const { title, description, pubDate, updatedDate, heroImage, headings = [] } = A
         )}
       </main>
 
-      <footer class="border-t border-white/20 backdrop-blur-sm">
-        <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between text-xs opacity-60">
+      <footer class="border-t border-border-primary backdrop-blur-sm">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between text-xs text-text-secondary">
           <div class="tracking-widest">© {new Date().getFullYear()}</div>
         </div>
       </footer>
@@ -75,7 +75,8 @@ const { title, description, pubDate, updatedDate, heroImage, headings = [] } = A
 
 <style is:global>
   article.prose {
-    @apply text-white/90 leading-relaxed;
+    @apply leading-relaxed;
+    color: var(--text-primary);
     line-height: 1.8;
     font-size: 1rem;
   }
@@ -93,7 +94,10 @@ const { title, description, pubDate, updatedDate, heroImage, headings = [] } = A
   article.prose h4,
   article.prose h5,
   article.prose h6 {
-    @apply text-white font-light tracking-tight border-b border-white/20 pb-3 mb-6;
+    @apply tracking-tight pb-3 mb-6;
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--border-primary);
+    font-weight: 300;
   }
 
   article.prose h1 {
@@ -113,21 +117,32 @@ const { title, description, pubDate, updatedDate, heroImage, headings = [] } = A
   }
 
   article.prose p {
-    @apply mb-6 opacity-85;
+    @apply mb-6;
+    color: var(--text-secondary);
   }
 
   article.prose a {
-    @apply text-white underline decoration-white/40 hover:decoration-white transition-colors;
+    @apply underline transition-colors;
+    color: var(--accent-primary);
+    text-decoration-color: rgba(126, 184, 218, 0.4);
+  }
+
+  article.prose a:hover {
+    text-decoration-color: var(--accent-primary);
   }
 
   /* Inline code (not in pre blocks) */
   article.prose :not(pre) > code {
-    @apply bg-white/10 px-1.5 py-0.5 border border-white/20 text-sm;
+    @apply px-1.5 py-0.5 text-sm;
+    background-color: var(--bg-elevated);
+    border: 1px solid var(--border-primary);
   }
 
   /* Code blocks - minimal styling to let Shiki handle colors */
   article.prose pre {
-    @apply border border-white/20 p-5 overflow-x-auto my-8;
+    @apply p-5 overflow-x-auto my-8;
+    background-color: var(--bg-surface) !important;
+    border: 1px solid var(--border-primary);
     line-height: 1.6;
   }
 
@@ -138,7 +153,8 @@ const { title, description, pubDate, updatedDate, heroImage, headings = [] } = A
 
   article.prose ul,
   article.prose ol {
-    @apply my-6 space-y-3 opacity-85;
+    @apply my-6 space-y-3;
+    color: var(--text-secondary);
   }
 
   article.prose li {
@@ -151,11 +167,14 @@ const { title, description, pubDate, updatedDate, heroImage, headings = [] } = A
   }
 
   article.prose blockquote {
-    @apply border-l-2 border-white/40 pl-6 py-2 italic opacity-75 my-8;
+    @apply pl-6 py-2 italic my-8;
+    border-left: 2px solid var(--border-hover);
+    color: var(--text-secondary);
   }
 
   article.prose img {
-    @apply border border-white/40 my-6;
+    @apply my-6;
+    border: 1px solid var(--border-hover);
   }
 
   article.prose table {
@@ -164,14 +183,18 @@ const { title, description, pubDate, updatedDate, heroImage, headings = [] } = A
 
   article.prose th,
   article.prose td {
-    @apply border border-white/20 px-4 py-2 text-left;
+    @apply px-4 py-2 text-left;
+    border: 1px solid var(--border-primary);
   }
 
   article.prose th {
-    @apply bg-white/5 font-light tracking-wider;
+    @apply tracking-wider;
+    background-color: var(--bg-surface);
+    font-weight: 400;
   }
 
   article.prose hr {
-    @apply border-white/20 my-8;
+    @apply my-8;
+    border-color: var(--border-primary);
   }
 </style>

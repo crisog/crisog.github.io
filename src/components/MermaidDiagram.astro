@@ -21,6 +21,44 @@ declare global {
   if (!window.mermaidInitialized) {
     mermaid.initialize({
       startOnLoad: true,
+      theme: "base",
+      themeVariables: {
+        // Background colors
+        background: "#121212",
+        primaryColor: "#1a1a1a",
+        secondaryColor: "#242424",
+        tertiaryColor: "#1a1a1a",
+
+        // Text colors
+        primaryTextColor: "#E8E8E8",
+        secondaryTextColor: "#E8E8E8",
+        tertiaryTextColor: "#E8E8E8",
+        textColor: "#E8E8E8",
+
+        // Border/line colors
+        primaryBorderColor: "rgba(232, 232, 232, 0.3)",
+        secondaryBorderColor: "rgba(232, 232, 232, 0.2)",
+        lineColor: "rgba(232, 232, 232, 0.5)",
+
+        // Node colors
+        nodeBorder: "rgba(232, 232, 232, 0.3)",
+        nodeTextColor: "#E8E8E8",
+        mainBkg: "#1a1a1a",
+
+        // Flowchart specific
+        clusterBkg: "#242424",
+        clusterBorder: "rgba(232, 232, 232, 0.2)",
+
+        // Labels
+        labelBackground: "#121212",
+        labelTextColor: "#E8E8E8",
+
+        // Edges
+        edgeLabelBackground: "#121212",
+
+        // Font
+        fontFamily: "JetBrains Mono, monospace",
+      },
     });
     window.mermaidInitialized = true;
   }

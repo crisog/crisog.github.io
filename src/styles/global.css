@@ -3,7 +3,22 @@
 @tailwind utilities;
 
 :root {
-  --bg-primary: #000000;
+  /* Background colors - deep grays instead of pure black */
+  --bg-primary: #121212;
+  --bg-surface: #1a1a1a;
+  --bg-elevated: #242424;
+
+  /* Text colors - off-white instead of pure white */
+  --text-primary: #E8E8E8;
+  --text-secondary: rgba(232, 232, 232, 0.7);
+  --text-disabled: rgba(232, 232, 232, 0.38);
+
+  /* Border colors */
+  --border-primary: rgba(232, 232, 232, 0.2);
+  --border-hover: rgba(232, 232, 232, 0.5);
+
+  /* Accent colors - desaturated for dark theme */
+  --accent-primary: #7eb8da;
 }
 
 @font-face {
@@ -24,11 +39,11 @@
 
 * {
   font-family: 'JetBrains Mono', monospace;
-  font-weight: 200;
+  font-weight: 400;
 }
 
 body {
   background-color: var(--bg-primary);
-  color: #ffffff;
+  color: var(--text-primary);
   overflow-x: hidden;
 }

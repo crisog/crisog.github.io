@@ -9,6 +9,14 @@ export default {
     extend: {
       colors: {
         "bg-primary": "var(--bg-primary)",
+        "bg-surface": "var(--bg-surface)",
+        "bg-elevated": "var(--bg-elevated)",
+        "text-primary": "var(--text-primary)",
+        "text-secondary": "var(--text-secondary)",
+        "text-disabled": "var(--text-disabled)",
+        "border-primary": "var(--border-primary)",
+        "border-hover": "var(--border-hover)",
+        "accent": "var(--accent-primary)",
       },
     },
   },

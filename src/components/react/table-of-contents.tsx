@@ -42,7 +42,7 @@ export function TableOfContents({ headings }: TableOfContentsProps) {
 
   return (
     <nav className="p-4">
-      <h2 className="text-sm font-light mb-4 tracking-widest opacity-60">
+      <h2 className="text-sm font-light mb-4 tracking-widest text-text-secondary">
         TABLE OF CONTENTS
       </h2>
       <ul className="list-none p-0 m-0 space-y-2">
@@ -58,8 +58,8 @@ export function TableOfContents({ headings }: TableOfContentsProps) {
                 overflow-hidden whitespace-nowrap text-ellipsis
                 ${
                   activeId === heading.slug
-                    ? "text-white border-white/80 bg-white/5"
-                    : "text-white/60 border-transparent hover:text-white/90 hover:translate-x-0.5"
+                    ? "text-text-primary border-border-hover bg-bg-elevated"
+                    : "text-text-secondary border-transparent hover:text-text-primary hover:translate-x-0.5"
                 }
               `}
             >

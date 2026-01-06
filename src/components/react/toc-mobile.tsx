@@ -15,7 +15,7 @@ export function TocMobile({ headings }: TocMobileProps) {
 
   // CSS handles visibility: hidden on screens >= 1200px (see parent)
   return (
-    <div className="border border-white/20 mb-8">
+    <div className="border border-border-primary bg-bg-surface mb-8">
       <TableOfContents headings={headings} />
     </div>
   );

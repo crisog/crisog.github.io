@@ -19,9 +19,9 @@ export function ScrollToTop() {
       aria-label="Scroll to top"
       className={`
         fixed bottom-8 right-8 z-50 p-3
-        border border-white/20 bg-bg-primary/80 backdrop-blur-sm
+        border border-border-primary bg-bg-surface/90 backdrop-blur-sm
         transition-all duration-300
-        hover:border-white/60 cursor-pointer
+        hover:border-border-hover cursor-pointer
         ${isScrolled ? "opacity-100 visible" : "opacity-0 invisible"}
       `}
     >
@@ -35,7 +35,7 @@ export function ScrollToTop() {
         strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
-        className="text-white/80"
+        className="text-text-secondary"
       >
         <path d="m18 15-6-6-6 6" />
       </svg>
