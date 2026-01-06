@@ -43,9 +43,11 @@ const { title, description, pubDate, updatedDate, heroImage, headings = [] } = A
             </div>
           </div>
 
-          {/* Mobile TOC - React component with client hydration */}
+          {/* Mobile TOC - hidden on desktop (>=1200px) */}
           {headings.length > 0 && (
-            <TocMobile headings={headings} contentId="blog-content" client:load />
+            <div class="block [@media(min-width:1200px)]:hidden">
+              <TocMobile headings={headings} client:load />
+            </div>
           )}
 
           <article class="prose prose-invert prose-sm md:prose-base max-w-none">
@@ -53,9 +55,11 @@ const { title, description, pubDate, updatedDate, heroImage, headings = [] } = A
           </article>
         </div>
 
-        {/* Desktop TOC Sidebar - React component with client hydration */}
+        {/* Desktop TOC Sidebar - hidden on mobile (<1200px) */}
         {headings.length > 0 && (
-          <TocSidebar headings={headings} contentId="blog-content" client:load />
+          <div class="hidden [@media(min-width:1200px)]:block">
+            <TocSidebar headings={headings} contentId="blog-content" client:load />
+          </div>
         )}
       </main>
 

@@ -13,19 +13,22 @@ interface TocSidebarProps {
 }
 
 export function TocSidebar({ headings, contentId }: TocSidebarProps) {
-  const { isVisible, left, width } = useTocPosition(contentId);
+  const { left, width, isReady } = useTocPosition(contentId);
 
-  if (!isVisible || headings.length === 0) return null;
+  if (headings.length === 0) return null;
 
+  // CSS handles visibility: hidden on screens < 1200px (see parent)
+  // Fade in after position is calculated to prevent layout shift
   return (
     <div
-      className="fixed z-10 transition-opacity duration-300"
+      className="fixed z-10 transition-opacity duration-200"
       style={{
         top: 120,
         left,
         width,
         maxHeight: "calc(100vh - 180px)",
         overflowY: "auto",
+        opacity: isReady ? 1 : 0,
       }}
     >
       <TableOfContents headings={headings} />
