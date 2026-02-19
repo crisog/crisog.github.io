@@ -1,0 +1,84 @@
+---
+title: "Deploying a Charon DVT Cluster with Ansible on Hoodi Testnet"
+description: "A walkthrough of deploying Obol's distributed validator cluster using obol-ansible - from infrastructure setup to contributing validator client support upstream."
+pubDate: "Sep 18 2025"
+---
+
+As part of a technical challenge for Obol Network, I chose to work with the [obol-ansible](https://github.com/ObolNetwork/obol-ansible) repo - an Ansible-based toolkit for deploying Charon distributed validator clusters. The goal was to spin up a 4-node Charon cluster on the Hoodi testnet, get it fully operational, and document the process. Along the way, I discovered that the repo was missing validator client support entirely, so I ended up building it and contributing it back upstream.
+
+## Infrastructure
+
+For the testnet setup I went with Hetzner cloud servers. One larger instance (CPX41) runs Nethermind and Lighthouse as the beacon node on Hoodi, set up following [EthStaker's guide](https://github.com/ethstaker/ethstaker-guides/blob/main/docs/hoodi-node.md). A separate server handles cluster key generation and runs the Ansible playbooks. Then four smaller servers (CPX21) each host one Charon node.
+
+For hardening, I set up a dedicated admin user on each server, locked down SSH to key-only authentication, configured UFW to allow only SSH and Charon's P2P port (3610/tcp), and set up Chrony for time synchronization.
+
+![Hetzner server list](/obol/1.png)
+
+## Cluster Key Generation
+
+I SSH'd into the cluster generation server, installed Docker and Ansible, and cloned the obol-ansible repo. For the actual key generation I used the [Obol Launchpad on Hoodi](https://hoodi.launchpad.obol.org/) alongside the `docker run` command to generate the `.charon` folder containing the cluster keys and configuration. The Launchpad walks you through most of this - you end up with a set of validator keys, a cluster lock file, and individual private keys for each node.
+
+## Ansible Configuration
+
+Each Charon node gets its own `host_vars` file defining its specific configuration: `node_index`, `validator_keys_dir`, `private_key_file`, `lock_file`, `p2p_external_ip`, and `beacon_node_endpoints`. Then an inventory file ties them all together.
+
+![host_vars files](/obol/2.png)
+
+![host_vars content](/obol/3.png)
+
+A representative `host_vars` file looks like this:
+
+```yaml
+node_index: 0
+validator_keys_dir: /path/to/.charon/node0/validator_keys
+private_key_file: /path/to/.charon/node0/charon-enr-private-key
+lock_file: /path/to/.charon/cluster-lock.json
+p2p_external_ip: 203.0.113.10
+beacon_node_endpoints: http://10.0.0.1:5052
+```
+
+The inventory file groups all four nodes under a single `charon_nodes` group:
+
+![Inventory file](/obol/4.png)
+
+## Deployment & First Issues
+
+I started with a single node to validate the setup before rolling out to all four:
+
+```bash
+ansible-playbook charon-node.yml -i inventory/prod.yml --limit hel1-node0
+```
+
+Charon started, but the logs immediately showed it couldn't reach the beacon client. I was a bit confused at first - the beacon node was running fine and synced - but quickly realized the issue. The EthStaker guide configures Lighthouse to bind its HTTP API to `127.0.0.1`, which makes sense when everything runs on the same machine. Since my Charon nodes are on separate servers communicating over the private network, Lighthouse wasn't accepting their connections. The fix was straightforward: set Lighthouse's HTTP address to `0.0.0.0` so it listens on all interfaces.
+
+I also noticed some noisy log entries about the relay at `bootnode.lb.gcp.obol.tech:3640/enr` - this turned out to be harmless chatter rather than an actual connectivity problem.
+
+## The Missing Validator Client
+
+After getting all four Charon nodes up, connected, and healthy, I realized something was off: there was no validator client being deployed anywhere. Charon acts as a middleware between the beacon node and the validator client, but obol-ansible only handled the Charon layer. Without a VC, the cluster had no way to actually perform validator duties.
+
+This wasn't just my oversight - there was an [open issue (#36)](https://github.com/ObolNetwork/obol-ansible/issues/36) for exactly this. Nobody had implemented it yet.
+
+So I built it. I wrote a Lodestar validator client role from scratch, including its defaults, a `run.sh` template, and the full task set. One tricky issue came up during the process: the VC container couldn't reach the Charon container because they weren't on the same Docker network. Once I sorted out the networking so both containers shared a network, everything clicked into place.
+
+After deploying the VC to all four nodes, I could see in the logs that each validator client was connected to its local Charon node and ready to perform duties.
+
+## Monitoring
+
+With the cluster running, I wanted proper visibility into its health. I created a monitoring role that deploys Grafana and Prometheus, pre-configured with Obol's Charon dashboard.
+
+Before depositing the validator, I let the cluster run for roughly 12 hours to make sure everything was stable. The Grafana dashboard confirmed the cluster was healthy - 100% peer duty success across all nodes.
+
+![Grafana dashboard](/obol/5.png)
+
+## Contributing Back
+
+I packaged the validator client work into [PR #42](https://github.com/ObolNetwork/obol-ansible/pull/42). The changes add a `validator_lodestar` role with its own defaults, run script, and tasks, and extend `charon-node.yml` to optionally deploy a validator client alongside each Charon node. I designed it to be extensible - adding support for other validator clients (Teku, Lighthouse, etc.) just requires writing a new role and registering it in the role map.
+
+I also flagged [issue #38](https://github.com/ObolNetwork/obol-ansible/issues/38) as worth addressing to improve the overall project.
+
+The validator is no longer running - the infrastructure was spun down after the challenge - but you can still see its history on [Hoodi beaconcha.in](https://hoodi.beaconcha.in/validator/0xb60329af24ea7d8acff9583f861a8332b1633f7982668141ac31684b63f2c04624e790b33aa06476389e3666b5d9e0c4#attestations).
+
+---
+
+*This was originally written as a technical challenge submission for Obol Network in September 2025. The restructuring and writing into blog format was LLM-assisted.*
