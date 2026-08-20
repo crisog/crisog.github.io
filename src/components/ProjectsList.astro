@@ -73,13 +73,13 @@ const displayedProjects = limit ? projects.slice(0, limit) : projects;
 <div class="grid md:grid-cols-3 gap-6 pt-8">
   {
     displayedProjects.map((project) => (
-      <div class="border border-white/20 p-6 space-y-3 hover:border-white/60 transition-colors backdrop-blur-sm">
+      <div class="border border-white/20 p-6 flex flex-col gap-3 hover:border-white/60 transition-colors backdrop-blur-sm">
         <div class="text-xs opacity-60 tracking-widest">{project.number}</div>
         <h3 class="text-lg tracking-wide">{project.name}</h3>
         <p class="text-xs opacity-70 leading-relaxed">
           {project.description}
         </p>
-        <div class="pt-2 flex gap-3 items-center">
+        <div class="mt-auto pt-2 flex gap-3 items-center">
           {project.secondaryUrl ? (
             <>
               <a
