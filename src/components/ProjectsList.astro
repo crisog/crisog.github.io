@@ -65,6 +65,21 @@ const projects: Project[] = [
     secondaryLabel: "GitHub",
     description: "Railway template that deploys PostgreSQL with Point-In-Time Recovery using Barman",
   },
+  {
+    number: "08",
+    name: "Postgres Migrator",
+    url: "https://railway.com/deploy/postgres-migrator?referralCode=crisog",
+    secondaryUrl: "https://github.com/crisog/postgres-migrator",
+    secondaryLabel: "GitHub",
+    description: "Migrate PostgreSQL databases using native pg_dump and pg_restore, with parallel restore and post-migration validation",
+  },
+  {
+    number: "09",
+    name: "Buzz by Block",
+    url: "https://railway.com/deploy/buzz-by-block",
+    primaryIcon: "railway",
+    description: "Railway template that deploys Buzz, a self-hosted team communication platform built on Nostr with channels, threads, DMs, and AI agents",
+  },
 ];
 
 const displayedProjects = limit ? projects.slice(0, limit) : projects;
@@ -110,7 +125,11 @@ const displayedProjects = limit ? projects.slice(0, limit) : projects;
               rel="noopener noreferrer"
               class="text-sm hover:opacity-60 transition-opacity"
             >
-              <i class="fab fa-github opacity-60" />
+              {project.primaryIcon === "railway" ? (
+                <img src="/railway-logo-light.svg" alt="Railway" class="h-4 w-4 opacity-60 inline-block" />
+              ) : (
+                <i class="fab fa-github opacity-60" />
+              )}
             </a>
           )}
         </div>
