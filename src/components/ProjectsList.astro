@@ -4,6 +4,7 @@ interface Project {
   url: string;
   description: string;
   number: string;
+  primaryIcon?: "railway" | "globe";
   secondaryUrl?: string;
   secondaryLabel?: string;
 }
@@ -18,7 +19,10 @@ const projects: Project[] = [
   {
     number: "01",
     name: "daml.run",
-    url: "https://github.com/crisog/daml",
+    url: "https://daml.run",
+    primaryIcon: "globe",
+    secondaryUrl: "https://github.com/crisog/daml",
+    secondaryLabel: "GitHub",
     description: "Interactive playground to write Daml smart contracts in the browser and deploy them to a live Canton sandbox",
   },
   {
@@ -82,9 +86,13 @@ const displayedProjects = limit ? projects.slice(0, limit) : projects;
                 href={project.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="hover:opacity-60 transition-opacity"
+                class="text-sm hover:opacity-60 transition-opacity"
               >
-                <img src="/railway-logo-light.svg" alt="Railway" class="h-4 w-4 opacity-60" />
+                {project.primaryIcon === "globe" ? (
+                  <i class="fas fa-globe opacity-60" />
+                ) : (
+                  <img src="/railway-logo-light.svg" alt="Railway" class="h-4 w-4 opacity-60 inline-block" />
+                )}
               </a>
               <a
                 href={project.secondaryUrl}
