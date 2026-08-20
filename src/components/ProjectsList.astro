@@ -17,18 +17,12 @@ const { limit } = Astro.props;
 const projects: Project[] = [
   {
     number: "01",
-    name: "Open Seer",
-    url: "https://github.com/crisog/openseer",
-    description: "Self-hosted, horizontally scalable HTTP monitoring with a modern web interface",
+    name: "daml.run",
+    url: "https://github.com/crisog/daml",
+    description: "Interactive playground to write Daml smart contracts in the browser and deploy them to a live Canton sandbox",
   },
   {
     number: "02",
-    name: "pgcollector-ingest",
-    url: "https://github.com/crisog/pgcollector-ingest",
-    description: "Ingest pganalyze PostgreSQL snapshots and expose them as Prometheus metrics",
-  },
-  {
-    number: "03",
     name: "FFmpeg REST API",
     url: "https://railway.com/deploy/ffmpeg-rest-api?referralCode=crisog",
     secondaryUrl: "https://github.com/crisog/ffmpeg-rest",
@@ -36,19 +30,31 @@ const projects: Project[] = [
     description: "REST API wrapping FFmpeg for media processing with Node.js, Hono, and BullMQ for async job processing",
   },
   {
+    number: "03",
+    name: "Open Seer",
+    url: "https://github.com/crisog/openseer",
+    description: "Self-hosted, horizontally scalable HTTP monitoring with a modern web interface",
+  },
+  {
     number: "04",
+    name: "pgcollector-ingest",
+    url: "https://github.com/crisog/pgcollector-ingest",
+    description: "Ingest pganalyze PostgreSQL snapshots and expose them as Prometheus metrics",
+  },
+  {
+    number: "05",
     name: "Railway SDK",
     url: "https://github.com/crisog/railway-sdk",
     description: "Lightweight TypeScript SDK for Railway.com",
   },
   {
-    number: "05",
+    number: "06",
     name: "Railway MCP Server",
     url: "https://github.com/crisog/railway-mcp-server",
     description: "Unofficial Model Context Protocol server exposing Railway resources and automation tools to MCP clients",
   },
   {
-    number: "06",
+    number: "07",
     name: "PostgreSQL + PITR",
     url: "https://railway.com/deploy/postgresql-barman--1?referralCode=9m68fX&utm_medium=integration&utm_source=template&utm_campaign=generic",
     secondaryUrl: "https://github.com/crisog/barman-pg-docker",
